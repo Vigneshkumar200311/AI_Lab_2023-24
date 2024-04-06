@@ -17,6 +17,35 @@ Step 10 : Obtain the plan for given problem.<br>
      
 ### Program:
 
+```
+(define (domain blocksworld)
+(:requirements :strips :equality)
+(:predicates (clear ?x)
+(on-table ?x)
+(arm-empty)
+(holding ?x)
+(on ?x ?y))
+(:action pickup
+:parameters (?ob)
+:precondition (and (clear ?ob) (on-table ?ob) (arm-empty))
+:effect (and (holding ?ob) (not (clear ?ob)) (not (on-table ?ob))
+(not (arm-empty))))
+(:action putdown
+:parameters (?ob)
+:precondition (and (holding ?ob))
+:effect (and (clear ?ob) (arm-empty) (on-table ?ob)
+(not (holding ?ob))))
+(:action stack
+:parameters (?ob ?underob)
+:precondition (and (clear ?underob) (holding ?ob))
+:effect (and (arm-empty) (clear ?ob) (on ?ob ?underob)
+(not (clear ?underob)) (not (holding ?ob))))
+(:action unstack
+:parameters (?ob ?underob)
+:precondition (and (on ?ob ?underob) (clear ?ob) (arm-empty))
+:effect (and (holding ?ob) (clear ?underob)
+(not (on ?ob ?underob)) (not (clear ?ob)) (not (arm-empty)))))
+```
 
 
 
@@ -24,11 +53,31 @@ Step 10 : Obtain the plan for given problem.<br>
 
 
 
-
-### Input 
-
+### Input
+```
+(define (problem pb1)
+(:domain blocksworld)
+(:objects a b)
+(:init (on-table a) (on-table b) (clear a) (clear b) (arm-empty))
+(:goal (and (on a b))))
+```
+###Input 2
+```
+(define(problem pb3)
+(:domain blocksworld)
+(:objects a b c)
+(:init (on-table a) (on-table b) (on-table c)
+(clear a) (clear b) (clear c) (arm-empty))
+(:goal (and (on a b) (on b c))))
+```
 ### Output/Plan:
 
+![image](https://github.com/Vigneshkumar200311/AI_Lab_2023-24/assets/160318706/c31c10d1-594a-4b37-8af0-6c9b4d3b3efc)
+
+
+###output 2:
+
+![image](https://github.com/Vigneshkumar200311/AI_Lab_2023-24/assets/160318706/323d31fa-8181-40ff-9af3-4b2fbb5bded6)
 
 
 ### Result:
